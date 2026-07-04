@@ -20,11 +20,30 @@ import { startScheduler } from './jobs/scheduler';
 const app = express();
 
 // ─── SECURITY ─────────────────────────────────────────────────────────────────
-app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    const allowed = [
+      process.env.FRONTEND_URL,
+      process.env.FRONTEND_URL?.replace(/\/$/, ''), // without trailing slash
+      'http://localhost:5173',
+      'http://localhost:5174',
+    ].filter(Boolean);
+
+    // Allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+
+    if (allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error('CORS blocked origin:', origin);
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    }
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100,
