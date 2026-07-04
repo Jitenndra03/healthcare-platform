@@ -233,7 +233,7 @@ The following test accounts are pre-seeded in the database:
 
 | Role | Email | Password | Redirect after login |
 |------|-------|----------|---------------------|
-| Admin | `admin@healthcare.com` | `Admin@1234` | `/admin/doctors` |
+| Admin | `admin@healthcare.com` | `Doctor@1234` | `/admin/doctors` |
 | Patient | `rahul@patient.com` | `Patient@1234` | `/patient/search` |
 | Patient | `ananya@patient.com` | `Patient@1234` | `/patient/search` |
 | Patient | `vikram@patient.com` | `Patient@1234` | `/patient/search` |
