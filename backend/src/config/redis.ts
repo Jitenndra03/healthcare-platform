@@ -8,4 +8,5 @@ const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
 redis.on('error', (err) => console.error('Redis error:', err));
 redis.on('connect', () => console.log('Redis connected'));
 
-export default redis;
+// Export as any to avoid type conflicts between top-level ioredis and bullmq's bundled ioredis
+export default redis as any;
